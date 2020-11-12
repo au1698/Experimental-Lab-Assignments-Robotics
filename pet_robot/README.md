@@ -1,9 +1,8 @@
-# Ros Architecture
-This project consist in two software architectures, one that allows to easily acquire data from the three available sensors (i.e. Kinect, Smartwatch and MOCAP) in order to build a multimodal dataset and the other one is to visualize the data stored.
-The dataset will be built for 5 types of gesture, namely pouring, drinking, sitting down, standing up and walking, using the sensors mentioned above.
+# Behavioral Architecture
+The scenario describes behavior simulation of a pet robot that interacts with humans and moves in a discrete 2D environment. 
+The human can interact doing speech comands and pointing gestures. 
 
-
-## Architecture of the System
+## ROS Architecture of the System
 The “Gesture Sequence Generator” module is the implementation of the server of a service-client
 pattern; the “Experimenter GUI” represents all the graphical part of the architecture (divided into “Configuration UI”, which contains the management of the recording’s configuration, and
 “Communication with User UI”, where the user can control the recording and where images and
@@ -23,7 +22,7 @@ In this section we will explain the repository's content.
 
 
 ### Launch
-This folder contains two launchfiles: one executes the whole application and the other one executes the nodes which mimic the hardware's functioning.
+This folder contains a launchfile: one executes the whole application and the other one executes the nodes which mimic the hardware's functioning.
 
 ### Msg
 This folder contains the ".msg" file needed for the gesture sequence structure that is saved in a rosbag.
