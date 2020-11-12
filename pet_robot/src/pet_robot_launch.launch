@@ -1,0 +1,7 @@
+<launch> 
+
+<node name="pet_state_machine" pkg="pet_robot" type="pet_state_machine.py" output="screen"/> 
+<node name="display_position" pkg="pet_robot" type="display_position.py" output="screen"/> 
+<node name="sim_perception" pkg="pet_robot" type="sim_perception.py" output="screen"/> 
+
+</launch> 
