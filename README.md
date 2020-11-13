@@ -8,7 +8,7 @@ The rqt_graph is shown below.
 
 # Rqt_graph
 <p align="center"> 
-<img src=https://github.com/au1698/Experimental-Lab-Assignments-Robotics.git/rqt_graph_pet_robot.png? raw=true">
+<img src=https://github.com/au1698/Experimental-Lab-Assignments-Robotics/blob/main/pet_robot/Images/rqt_graph_pet_robot.png raw=true">
 </p>
 
 ## sim_perception
