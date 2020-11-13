@@ -32,9 +32,9 @@ To visualize the Smach Viewer:
     
     ```
 
-# Rqt_graph
+## Rqt_graph
 <p align="center"> 
-<img src=https://github.com/au1698/Experimental-Lab-Assignments-Robotics.git/pet_robot/src/Images/rqt_graphpet_robot.png?raw=true">
+<img src=https://github.com/au1698/Experimental-Lab-Assignments-Robotics/blob/main/pet_robot/Images/rqt_graph_pet_robot.png raw=true">
 </p>
 
 ## Working hypoteses
