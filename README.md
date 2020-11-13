@@ -6,14 +6,22 @@ The human can interact with the robot through speech comands and pointing gestur
 The system is made by three ros nodes: "sim_perception.py", "pet_state_machine.py" and "display_position.py". 
 The rqt_graph is shown below.
 
-## 
-
+# Rqt_graph
 <p align="center"> 
-<img src="https://github.com/FraPorta/Itslit/blob/master/ExperimenterDiagram.jpg?raw=true">
+<img src=https://github.com/au1698/Experimental-Lab-Assignments-Robotics.git/rqt_graph_pet_robot.png?raw=true">
 </p>
 
+## sim_perception
+This node until is active simulates user's random choice between a pointing gesture (2D coordinates generation) and the vocal comands: 'go_to_home' and 'play'. 
+It prints on the screen user's choice. 
+Pointed gesture is of type 'Int64MultiArray' while vocal comands are simply of the type 'string'.
+It checks if "user_comand" is a string or an array. In the first case "user_comand" data are published on the topic /pointed_comand in the second data are published onthe topic /vocal_comand.
 
-## Installation
+## pet_state_machine
+This node is a finite state machine composed of three states: 
+
+
+## How to run the code
 The first thing to do, after having cloned the repository in the Ros workspace, is to build the package in your workspace. 
     ```
     catkin_make
@@ -50,4 +58,4 @@ Using a service-client as kind of comunication between the simulation node and t
 
 ## Author: 
 
-Aurora Bertino - bertino.aurora16@gmail-com
+* Aurora Bertino: bertino.aurora16@gmail.com
