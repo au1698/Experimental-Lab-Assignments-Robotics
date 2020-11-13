@@ -171,8 +171,8 @@ class Play(smach.State):
         rospy.loginfo('The robot is reaching person position')
         time.sleep(5)
         rospy.loginfo('The robot is waiting for a pointing gesture')
-        time.sleep(7)
-        #rospy.Subscriber("/vocal_comand",String, callback_vocal_comand) 
+        time.sleep(10)
+        #rospy.Subscriber("/vocal_comand",String, callback_vocal_comand) sss
         #rospy.Subscriber("/pointed_comand",Int64MultiArray, callback_pointed_comand)
         while True:
              rospy.Subscriber("/vocal_comand",String, callback_vocal_comand) 
