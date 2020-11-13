@@ -154,11 +154,11 @@ class Play(smach.State):
              if (vocal_data == 'go_to_home' or  vocal_data == 'play'):
                  rospy.loginfo('ERROR: I am waiting for a pointing gesture')
                  time.sleep(5) 
-             else: 
+              
              ## Subscribe to the topic '/pointed_comand'
-                 rospy.Subscriber("/pointed_comand",Int64MultiArray, callback_pointed_comand)
-                 time.sleep(5) 
-                 break 
+             rospy.Subscriber("/pointed_comand",Int64MultiArray, callback_pointed_comand)  
+             time.sleep(5) 
+             break 
         
         
         time.sleep(5)
