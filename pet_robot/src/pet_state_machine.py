@@ -1,6 +1,13 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+## @file pet_state_machine.py 
+# @brief This node implements a state machine. 
+# 
+# Details: It receives commands 'sim_perception' node, implements the state machine and sends the target positions to 'display_position' node.
+# 
+  
+
 import roslib
 import rospy
 import smach
@@ -12,26 +19,12 @@ import numpy as np
 from std_msgs.msg import Int64MultiArray
 from std_msgs.msg import String
 
-# INSTALLATION 
-# - move this file to the 'smach_tutorial/scr' folder and give running permissions to it with
-#          $ chmod +x pet_state_machine.py
-# - run the 'roscore' and then you can run the state machine with
-#          $ rosrun smach_tutorial pet_state_machine.py
-# - run the visualiser with
-# rosrun smach_viewer smach_viewer.py
-
-
-# finite state machine defines only interaction (I/O) between the states (noded of a state machine)
-
 array_point = np.array([0,0])
 target_pub = rospy.Publisher('/target_point', Int64MultiArray, queue_size=10)
 vocal_data = ""
 
-
+## Define callback function: vocal_comand()
 def callback_vocal_comand(data):
-     #target_pub = rospy.Publisher('/target_point', Int64MultiArray, queue_size=10)
-     # se arriva il messaggio al topic "vocal_comand"
-     # traslate "vocal comands" into 2D coordinates
      global vocal_data
      if len (data.data) == 0:
          rospy.logwarn("data empty")
@@ -39,38 +32,27 @@ def callback_vocal_comand(data):
      else:
          vocal_data = data.data
          
-     #if data  == 'go_to_home':  
-             #x = np.random.randint(0, 50, 1)
-             #y = np.random.randint(0, 50, 1)
-             #array_point =np.array([x,y]) 
-             # chiama la funzione "get_position" create a publisher 
-             #array_point = (0,0)             #home position   
-             #target_pub.publish(array_point)
-             #print ('active function "go_to_home')
          
-     #else: 
-         
-
-
+## Define callback function: pointed_comand()
 def callback_pointed_comand(data):
-     #target_pub = rospy.Publisher('/target_point', Int64MultiArray, queue_size=10)
-     # save inside an array the 2D position
-     array_point = data
-     target_pub.publish(array_point)
-     time.sleep(5)
-     rospy.loginfo('The robot is reaching the pointed location')
-     print ('active function "go_to_target',array_point)
-     if len (data.data) == 0:
+    global array_point
+    if len (data.data) == 0:
          rospy.logwarn("data empty")
          return 
+    ## Save the 2D position
+    array_point = data
+    ## Publish target position on topic '/target_point'
+    target_pub.publish(array_point)
+    time.sleep(5)
+    rospy.loginfo('The robot is reaching the pointed location')
+    print ('active function "go_to_target',array_point)
+
      
-
-
-
-# define state  Sleep
+## Define state Sleep
 class Sleep(smach.State):
-    def __init__(self):       # costructor
-    # initialisation function, it should not wait   
+    ## Constructor of the class Sleep
+    def __init__(self):       
+    ## Initialization function 
         smach.State.__init__(self, 
                         outcomes=['wake_up'],
                         input_keys=['sleep_counter_in'],
@@ -78,66 +60,59 @@ class Sleep(smach.State):
 
 
     def execute(self,userdata):
-    # qui faccio il subscribe/ aspetto dati da sensori, dove faccio il wait
         time.sleep(5)
         rospy.loginfo('Executing state SLEEP')
         userdata.sleep_counter_out = userdata.sleep_counter_in + 1  
 
-    # SE RICEVO DAL ROS PARAMETER SERVER CHE HO HO RAGIUNTO LA "TARGET POSITION"
-    # -> SUBSCRIBE NODO (VOCAL COMAND OR POINTED COMAND)
-        #reached_target = rospy . get_param ( '/bool_True' )
-        
-        #target = rospy.get_param('/another_integer')
-        #if target == True :
-         # define the publisher (target_point)
-        #target_pub = rospy.Publisher('/target_point', Int64MultiArray, queue_size=10)
-        #rospy.Subscriber("/pointed_comand",Int64MultiArray, callback_pointed_comand)
-
-        # Comand that let the robot go home
-        home_comand = Int64MultiArray()     #inizialize the variable 
-        home_comand.data = np.array([0,0])  # home position 
+        ## Comand that let the robot go home
+        home_comand = Int64MultiArray()     
+        ## Define home position 
+        home_comand.data = np.array([0,0]) 
+        ## Publish home position on topic '/target_point'
         target_pub.publish(home_comand)
         rospy.loginfo('The robot is reaching home position')
         time.sleep(15)
+        ## Subscribe to the topic '/vocal_comand'
         rospy.Subscriber("/vocal_comand",String, callback_vocal_comand) 
-        if vocal_data  == 'go_to_home': # se mi riposo e mi arriva il comando "continua a riposare"
+        if vocal_data  == 'go_to_home': 
          time.sleep(5)
-         rospy.loginfo('THe robot is at home')
+         rospy.loginfo('The robot is already at home')
         else:
    
              time.sleep(4)  
         
-    # CAMBIA STATO -> NORMAL 
+    ## Change state: from 'SLEEP' to 'NORMAL'  
         return 'wake_up'
 
-
+## Define state Normal
 class Normal(smach.State):
-    def __init__(self):       # costructor
-    # initialisation function, it should not wait   
+    ## Constructor of the class Normal
+    def __init__(self):     
+    ## Initialization function 
         smach.State.__init__(self, 
                         outcomes=['go_to_sleep','go_to_play'],
                         input_keys=['normal_counter_in'],
                         output_keys=['normal_counter_out'])
 
     def execute(self,userdata):
-    # qui faccio il subscribe/ aspetto dati da sensori, dove faccio il wait
         time.sleep(5)
         rospy.loginfo('Executing state NORMAL')
         userdata.normal_counter_out = userdata.normal_counter_in + 1  
+        ## The robot moves randomly 
         for i in range(0, 3):
-         # in this state the robot moves randomly 
              x = np.random.randint(0, 50, 1)
              y = np.random.randint(0, 50, 1)
              move_random = Int64MultiArray() 
              move_random.data = np.array([x,y])
+             ## Publish random position on topic '/target_point'
              target_pub.publish(move_random) 
              time.sleep(8)  
-        # USER ACTIONS 
+        ## Subscribe to the topic '/vocal_comand' and '/pointed_comand'
         rospy.Subscriber("/pointed_comand",Int64MultiArray, callback_pointed_comand)
         rospy.Subscriber("/vocal_comand",String, callback_vocal_comand) 
-        #rospy.Subscriber("/pointed_comand",Int64MultiArray, callback_pointed_comand)
-        if (vocal_data == 'go_to_sleep'):
 
+        if (vocal_data == 'go_to_home'):
+         ## Check on user's vocal comands
              return 'go_to_sleep'
              rospy.loginfo('User decides to go to home')
         if (vocal_data == 'play'):
@@ -145,63 +120,63 @@ class Normal(smach.State):
             return 'go_to_play' 
 
         time.sleep(4)       
-    # scegli random se attivare SLEEP o PLAY
+    ## Change state randomly: from 'NORMAL' to 'SLEEP' or 'PLAY'   
         return random.choice(['go_to_sleep','go_to_play']) 
                 
-
-
+## Define state Play 
 class Play(smach.State):
-    def __init__(self):       # costructor
-    # initialisation function, it should not wait   
+    ## Constructor of the class Play
+    def __init__(self):       
+    ## Initialization function   
         smach.State.__init__(self, 
                          outcomes=['go_to_normal'],
                          input_keys=['play_counter_in'],
                          output_keys=['play_counter_out'])
 
     def execute(self,userdata):
-    # qui faccio il subscribe/ aspetto dati da sensori, dove faccio il wait
         time.sleep(5)
         rospy.loginfo('Executing state PLAY')
         userdata.play_counter_out = userdata.play_counter_in + 1 
-        person_position = Int64MultiArray()  #inizialize the variable 
+        person_position = Int64MultiArray()  
+        ## Define random person position
         x = np.random.randint(0, 50, 1)
         y = np.random.randint(0, 50, 1)  
         person_position.data = np.array([x,y])
-        target_pub.publish(person_position)     # vai dove si trova la persona 
+        ## Publish person position randomly on topic '/target_point'
+        target_pub.publish(person_position)     
         rospy.loginfo('The robot is reaching person position')
         time.sleep(5)
         rospy.loginfo('The robot is waiting for a pointing gesture')
         time.sleep(10)
-        #rospy.Subscriber("/vocal_comand",String, callback_vocal_comand) sss
-        #rospy.Subscriber("/pointed_comand",Int64MultiArray, callback_pointed_comand)
         while True:
+             ## Subscribe to the topic '/vocal_comand' 
              rospy.Subscriber("/vocal_comand",String, callback_vocal_comand) 
-             if (vocal_data == 'go_to_sleep' or  vocal_data == 'play'):
+             if (vocal_data == 'go_to_home' or  vocal_data == 'play'):
                  rospy.loginfo('ERROR: I am waiting for a pointing gesture')
                  time.sleep(5) 
-             rospy.Subscriber("/pointed_comand",Int64MultiArray, callback_pointed_comand)
-             time.sleep(5)
+             else: 
+             ## Subscribe to the topic '/pointed_comand'
+                 rospy.Subscriber("/pointed_comand",Int64MultiArray, callback_pointed_comand)
+                 time.sleep(5) 
              break 
-        #rospy.Subscriber("/vocal_comand",String, callback_vocal_comand) 
-        #if (vocal_data == 'go_to_sleep'):
-            #return 'go_to_sleep'
+      
         time.sleep(5)
-    # scegli random se attivare SLEEP o PLAY
+    ## Change state randomly: from 'PLAY' to 'NORMAL' 
         return  'go_to_normal'
             
 
         
-def main():    # configuration of the state machine
-    rospy.init_node('pet_state_machine_node')   #inizializzo nodo ros
+def main():    
+    ## Inizialize ros node ''pet_state_machine'
+    rospy.init_node('pet_state_machine')   
     
-     # Create a SMACH state machine
-    sm = smach.StateMachine(outcomes=['container_interface'])   # SINTASSI = libreria.funzione
+    ## Create a SMACH state machine
+    sm = smach.StateMachine(outcomes=['container_interface'])   
     sm.userdata.sm_counter = 0
-
-
-     # Open the container
+    
+    ## Open state machine container
     with sm:
-         # Add states to the container
+         ## Add states to the container
          smach.StateMachine.add('SLEEP', Sleep(),
                                   
                                transitions={'wake_up':'NORMAL'},
@@ -227,14 +202,14 @@ def main():    # configuration of the state machine
 
 
 
-    # Create and start the introspection server for visualization
+    ## Create and start the introspection server for visualization
     sis = smach_ros.IntrospectionServer('server_name', sm, '/SM_ROOT')
     sis.start()
 
-    # Execute the state machine
+    ## Execute the state machine
     outcome = sm.execute()
 
-    # Wait for ctrl-c to stop the application
+    ## Wait for ctrl-c to stop the application
     rospy.spin()
     sis.stop()
 
