@@ -34,7 +34,7 @@ To visualize the Smach Viewer:
 
 # Rqt_graph
 <p align="center"> 
-<img src="https://github.com/FraPorta/Itslit/blob/master/rqt.png?raw=true">
+<img src=https://github.com/au1698/Experimental-Lab-Assignments-Robotics.git/rqt_graph_pet_robot.png?raw=true">
 </p>
 
 ## Working hypoteses
