@@ -12,7 +12,7 @@ import numpy as np
 from std_msgs.msg import Int64MultiArray
 from std_msgs.msg import String
 
-# INSTALLATION
+# INSTALLATION 
 # - move this file to the 'smach_tutorial/scr' folder and give running permissions to it with
 #          $ chmod +x pet_state_machine.py
 # - run the 'roscore' and then you can run the state machine with

@@ -31,7 +31,8 @@ def  Simulator ():
          # Inizialize the node   
          rospy.init_node('sim_perception', anonymous=True)
 
-         pointed_comand = Int64MultiArray()      # inizialize the variable which contains the 2D point
+         # inizialize the variable which contains the 2D point
+         pointed_comand = Int64MultiArray()      
          
          # Check if "user_comand" is a string or an array
          if type(user_comand) == str:   

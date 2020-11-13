@@ -20,17 +20,25 @@ It checks if "user_comand" is a string or an array. In the first case "user_coma
 ## pet_state_machine
 This node is a finite state machine composed of three states: 
 
+<p align="center"> 
+<img src=https://github.com/au1698/Experimental-Lab-Assignments-Robotics/blob/main/pet_robot/Images/pet_state_machine.jpeg raw=true">
+</p>
+
 
 ## How to run the code
 The first thing to do, after having cloned the repository in the Ros workspace, is to build the package in your workspace. 
     ```
     catkin_make
     ```
+Give running permissions to it with
+    ```
+    $ chmod +x
+    ```
 
 To run the system:
     
     ```
-    roslaunch pet_robot pet_robot_launch.launch
+    roslaunch pet_robot pet_robot.launch
     
     ```
 To visualize the Smach Viewer:
@@ -39,11 +47,6 @@ To visualize the Smach Viewer:
  rosrun smach_viewer smach_viewer.py
     
     ```
-
-## Rqt_graph
-<p align="center"> 
-<img src=https://github.com/au1698/Experimental-Lab-Assignments-Robotics/blob/main/pet_robot/Images/rqt_graph_pet_robot.png raw=true">
-</p>
 
 ## Working hypoteses
 The gesture commands present the same "priority" since they occur in random order.
