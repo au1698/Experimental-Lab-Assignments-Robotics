@@ -1,0 +1,46 @@
+\hypertarget{pet__state__machine_8py}{}\section{src/pet\+\_\+state\+\_\+machine.py File Reference}
+\label{pet__state__machine_8py}\index{src/pet\+\_\+state\+\_\+machine.\+py@{src/pet\+\_\+state\+\_\+machine.\+py}}
+
+
+This node implements a state machine.  
+
+
+\subsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+class \hyperlink{classpet__state__machine_1_1Sleep}{pet\+\_\+state\+\_\+machine.\+Sleep}
+\begin{DoxyCompactList}\small\item\em Define state \hyperlink{classpet__state__machine_1_1Sleep}{Sleep}. \end{DoxyCompactList}\item 
+class \hyperlink{classpet__state__machine_1_1Normal}{pet\+\_\+state\+\_\+machine.\+Normal}
+\begin{DoxyCompactList}\small\item\em Define state \hyperlink{classpet__state__machine_1_1Normal}{Normal}. \end{DoxyCompactList}\item 
+class \hyperlink{classpet__state__machine_1_1Play}{pet\+\_\+state\+\_\+machine.\+Play}
+\begin{DoxyCompactList}\small\item\em Define state \hyperlink{classpet__state__machine_1_1Play}{Play}. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{pet__state__machine_8py_a563dd2517be7741ab69836cd20fd93a8}\label{pet__state__machine_8py_a563dd2517be7741ab69836cd20fd93a8}} 
+def \hyperlink{pet__state__machine_8py_a563dd2517be7741ab69836cd20fd93a8}{pet\+\_\+state\+\_\+machine.\+callback\+\_\+vocal\+\_\+comand} (data)
+\begin{DoxyCompactList}\small\item\em Define callback function\+: vocal\+\_\+comand() \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{pet__state__machine_8py_a7e086af40b461eda18ea8d9ed38541ce}\label{pet__state__machine_8py_a7e086af40b461eda18ea8d9ed38541ce}} 
+def \hyperlink{pet__state__machine_8py_a7e086af40b461eda18ea8d9ed38541ce}{pet\+\_\+state\+\_\+machine.\+callback\+\_\+pointed\+\_\+comand} (data)
+\begin{DoxyCompactList}\small\item\em Define callback function\+: pointed\+\_\+comand() \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{pet__state__machine_8py_ad9de91657c79aa79d33b950b773a35aa}\label{pet__state__machine_8py_ad9de91657c79aa79d33b950b773a35aa}} 
+def {\bfseries pet\+\_\+state\+\_\+machine.\+main} ()
+\end{DoxyCompactItemize}
+\subsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{pet__state__machine_8py_af53cc33297066aae1dbdb54854f330bc}\label{pet__state__machine_8py_af53cc33297066aae1dbdb54854f330bc}} 
+{\bfseries pet\+\_\+state\+\_\+machine.\+array\+\_\+point} = np.\+array(\mbox{[}0,0\mbox{]})
+\item 
+\mbox{\Hypertarget{pet__state__machine_8py_ad6478f800f0511d8c44b4fe21592a8bf}\label{pet__state__machine_8py_ad6478f800f0511d8c44b4fe21592a8bf}} 
+{\bfseries pet\+\_\+state\+\_\+machine.\+target\+\_\+pub} = rospy.\+Publisher(\textquotesingle{}/target\+\_\+point\textquotesingle{}, Int64\+Multi\+Array, queue\+\_\+size=10)
+\item 
+\mbox{\Hypertarget{pet__state__machine_8py_a3431c5d94049a56224841f5984287cbd}\label{pet__state__machine_8py_a3431c5d94049a56224841f5984287cbd}} 
+string {\bfseries pet\+\_\+state\+\_\+machine.\+vocal\+\_\+data} = \char`\"{}\char`\"{}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+This node implements a state machine. 
+
+Details\+: It receives commands \textquotesingle{}sim\+\_\+perception\textquotesingle{} node, implements the state machine and sends the target positions to \textquotesingle{}display\+\_\+position\textquotesingle{} node. 

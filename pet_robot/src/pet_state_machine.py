@@ -158,8 +158,9 @@ class Play(smach.State):
              ## Subscribe to the topic '/pointed_comand'
                  rospy.Subscriber("/pointed_comand",Int64MultiArray, callback_pointed_comand)
                  time.sleep(5) 
-             break 
-      
+                 break 
+        
+        
         time.sleep(5)
     ## Change state randomly: from 'PLAY' to 'NORMAL' 
         return  'go_to_normal'
