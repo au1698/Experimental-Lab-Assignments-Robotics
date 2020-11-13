@@ -58,6 +58,7 @@ def callback_pointed_comand(data):
      array_point = data
      target_pub.publish(array_point)
      time.sleep(5)
+     rospy.loginfo('The robot is reaching the pointed location')
      print ('active function "go_to_target',array_point)
      if len (data.data) == 0:
          rospy.logwarn("data empty")
@@ -96,7 +97,7 @@ class Sleep(smach.State):
         home_comand = Int64MultiArray()     #inizialize the variable 
         home_comand.data = np.array([0,0])  # home position 
         target_pub.publish(home_comand)
-        rospy.loginfo('THe robot is reaching home position')
+        rospy.loginfo('The robot is reaching home position')
         time.sleep(15)
         rospy.Subscriber("/vocal_comand",String, callback_vocal_comand) 
         if vocal_data  == 'go_to_home': # se mi riposo e mi arriva il comando "continua a riposare"
@@ -153,7 +154,7 @@ class Play(smach.State):
     def __init__(self):       # costructor
     # initialisation function, it should not wait   
         smach.State.__init__(self, 
-                         outcomes=['go_to_sleep','go_to_normal'],
+                         outcomes=['go_to_normal'],
                          input_keys=['play_counter_in'],
                          output_keys=['play_counter_out'])
 
@@ -170,25 +171,23 @@ class Play(smach.State):
         rospy.loginfo('The robot is reaching person position')
         time.sleep(5)
         rospy.loginfo('The robot is waiting for a pointing gesture')
-        time.sleep(10)
+        time.sleep(7)
         #rospy.Subscriber("/vocal_comand",String, callback_vocal_comand) 
         #rospy.Subscriber("/pointed_comand",Int64MultiArray, callback_pointed_comand)
         while True:
              rospy.Subscriber("/vocal_comand",String, callback_vocal_comand) 
              if (vocal_data == 'go_to_sleep' or  vocal_data == 'play'):
-                 time.sleep(5)  
                  rospy.loginfo('ERROR: I am waiting for a pointing gesture')
-             else: # se è uguale a un pointing gesture
-                 rospy.Subscriber("/pointed_comand",Int64MultiArray, callback_pointed_comand)
-                 rospy.loginfo('The robot is reaching the pointed location')
-                 time.sleep(5)
-                 break 
+                 time.sleep(5) 
+             rospy.Subscriber("/pointed_comand",Int64MultiArray, callback_pointed_comand)
+             time.sleep(5)
+             break 
         #rospy.Subscriber("/vocal_comand",String, callback_vocal_comand) 
         #if (vocal_data == 'go_to_sleep'):
             #return 'go_to_sleep'
         time.sleep(5)
     # scegli random se attivare SLEEP o PLAY
-        return  random.choice(['go_to_sleep','go_to_normal'])
+        return  'go_to_normal'
             
 
         
@@ -219,8 +218,7 @@ def main():    # configuration of the state machine
                                           'normal_counter_out':'sm_counter'})
 
          smach.StateMachine.add('PLAY', Play(), 
-                               transitions={'go_to_sleep':'SLEEP',
-                                            'go_to_normal':'NORMAL'}, 
+                               transitions={'go_to_normal':'NORMAL'}, 
                                             
                                             
                                remapping={'play_counter_in':'sm_counter',

@@ -50,4 +50,4 @@ Using a service-client as kind of comunication between the simulation node and t
 
 ## Author: 
 
-Aurora Bertino 
+Aurora Bertino - bertino.aurora16@gmail-com

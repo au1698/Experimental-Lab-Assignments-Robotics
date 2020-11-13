@@ -96,7 +96,7 @@ class Sleep(smach.State):
         home_comand = Int64MultiArray()     #inizialize the variable 
         home_comand.data = np.array([0,0])  # home position 
         target_pub.publish(home_comand)
-        rospy.loginfo('THe robot is reaching home position')
+        rospy.loginfo('The robot is reaching home position')
         time.sleep(15)
         rospy.Subscriber("/vocal_comand",String, callback_vocal_comand) 
         if vocal_data  == 'go_to_home': # se mi riposo e mi arriva il comando "continua a riposare"
@@ -159,7 +159,7 @@ class Play(smach.State):
 
     def execute(self,userdata):
     # qui faccio il subscribe/ aspetto dati da sensori, dove faccio il wait
-        time.sleep(5)
+        #time.sleep(5)
         rospy.loginfo('Executing state PLAY')
         userdata.play_counter_out = userdata.play_counter_in + 1 
         person_position = Int64MultiArray()  #inizialize the variable 
@@ -170,23 +170,24 @@ class Play(smach.State):
         rospy.loginfo('The robot is reaching person position')
         time.sleep(5)
         rospy.loginfo('The robot is waiting for a pointing gesture')
-        time.sleep(10)
+        time.sleep(7)
         #rospy.Subscriber("/vocal_comand",String, callback_vocal_comand) 
         #rospy.Subscriber("/pointed_comand",Int64MultiArray, callback_pointed_comand)
         while True:
              rospy.Subscriber("/vocal_comand",String, callback_vocal_comand) 
-             if (vocal_data == 'go_to_sleep' or  vocal_data == 'play'):
+             if (vocal_data == 'go_to_home' or  vocal_data == 'play'):
                  time.sleep(5)  
                  rospy.loginfo('ERROR: I am waiting for a pointing gesture')
-             else: # se è uguale a un pointing gesture
+             #rospy.Subscriber("/pointed_comand",Int64MultiArray, callback_pointed_comand)
+             if (len (vocal_data)) == 0:
                  rospy.Subscriber("/pointed_comand",Int64MultiArray, callback_pointed_comand)
-                 rospy.loginfo('The robot is reaching the pointed location')
+                 #rospy.loginfo('The robot is reaching the pointed location')
                  time.sleep(5)
                  break 
         #rospy.Subscriber("/vocal_comand",String, callback_vocal_comand) 
         #if (vocal_data == 'go_to_sleep'):
             #return 'go_to_sleep'
-        time.sleep(5)
+        #time.sleep(5)
     # scegli random se attivare SLEEP o PLAY
         return  random.choice(['go_to_sleep','go_to_normal'])
             
